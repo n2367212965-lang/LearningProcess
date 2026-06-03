@@ -1,0 +1,47 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/add/add",
+    "pages/stats/stats",
+    "pages/settings/settings"
+  ],
+  "tabBar": {
+    "color": "#9ca3af",
+    "selectedColor": "#f59e0b",
+    "backgroundColor": "#1a1a1a",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "账单",
+        "iconPath": "images/bill.png",
+        "selectedIconPath": "images/bill_active.png"
+      },
+      {
+        "pagePath": "pages/add/add",
+        "text": "记账",
+        "iconPath": "images/add.png",
+        "selectedIconPath": "images/add_active.png"
+      },
+      {
+        "pagePath": "pages/stats/stats",
+        "text": "统计",
+        "iconPath": "images/stats.png",
+        "selectedIconPath": "images/stats_active.png"
+      },
+      {
+        "pagePath": "pages/settings/settings",
+        "text": "我的",
+        "iconPath": "images/mine.png",
+        "selectedIconPath": "images/mine_active.png"
+      }
+    ]
+  },
+  "window": {
+    "navigationBarBackgroundColor": "#0f0f0f",
+    "navigationBarTitleText": "记账本",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#0f0f0f"
+  },
+  "sitemapLocation": "sitemap.json"
+}

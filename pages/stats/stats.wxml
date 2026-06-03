@@ -1,0 +1,40 @@
+<view class="page">
+  <!-- 月份切换 -->
+  <view class="month-nav-bar">
+    <view class="month-nav-btn" bindtap="prevMonth">‹</view>
+    <text class="month-nav-text">{{year}}年{{month}}月</text>
+    <view class="month-nav-btn" bindtap="nextMonth">›</view>
+  </view>
+
+  <!-- 月度汇总卡片 -->
+  <view class="summary-card card">
+    <view class="summary-row">
+      <view class="summary-item">
+        <text class="summary-label">收入</text>
+        <text class="summary-amount income">¥{{incomeStr}}</text>
+      </view>
+      <view class="summary-divider"></view>
+      <view class="summary-item">
+        <text class="summary-label">支出</text>
+        <text class="summary-amount expense">¥{{expenseStr}}</text>
+      </view>
+      <view class="summary-divider"></view>
+      <view class="summary-item">
+        <text class="summary-label">结余</text>
+        <text class="summary-amount {{balance>=0?'income':'expense'}}">¥{{balanceStr}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 柱状图 -->
+  <view class="chart-card card">
+    <view class="chart-title">每日收支</view>
+    <canvas class="bar-chart" canvas-id="barChart"></canvas>
+  </view>
+
+  <!-- 饼图 -->
+  <view class="chart-card card">
+    <view class="chart-title">支出分类</view>
+    <canvas class="pie-chart" canvas-id="pieChart"></canvas>
+  </view>
+</view>

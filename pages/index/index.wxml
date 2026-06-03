@@ -1,0 +1,56 @@
+<view class="page">
+  <!-- 顶部月度概览 -->
+  <view class="month-summary card">
+    <view class="month-header">
+      <view class="month-nav" bindtap="prevMonth">‹</view>
+      <text class="month-text">{{year}}年{{month}}月</text>
+      <view class="month-nav" bindtap="nextMonth">›</view>
+    </view>
+    <view class="summary-row">
+      <view class="summary-item">
+        <text class="summary-label">支出</text>
+        <text class="summary-amount expense">¥{{expenseStr}}</text>
+      </view>
+      <view class="summary-item">
+        <text class="summary-label">收入</text>
+        <text class="summary-amount income">¥{{incomeStr}}</text>
+      </view>
+      <view class="summary-item">
+        <text class="summary-label">结余</text>
+        <text class="summary-amount {{balance>=0?'income':'expense'}}">¥{{balanceStr}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 每日账单列表 -->
+  <view class="daily-list">
+    <view wx:for="{{dailyList}}" wx:key="date" class="daily-group">
+      <view class="daily-header">
+        <text class="daily-date">{{item.dateCN}}</text>
+        <text class="daily-expense">支出 ¥{{item.expenseStr}}</text>
+        <text class="daily-income" wx:if="{{item.income>0}}"> 收入 ¥{{item.incomeStr}}</text>
+      </view>
+      <view class="record-item" wx:for="{{item.items}}" wx:key="id" data-id="{{item.id}}" bindlongpress="onDeleteRecord">
+        <view class="record-left">
+          <view class="record-icon {{item.type===0?'expense':'income'}}">{{categoryIcons[item.category] || '📦'}}</view>
+          <view class="record-info">
+            <text class="record-category">{{item.category}}</text>
+            <text class="record-note" wx:if="{{item.note}}">{{item.note}}</text>
+          </view>
+        </view>
+        <text class="record-amount {{item.type===0?'expense':'income'}}">
+          {{item.type===0?'-':'+'}}¥{{item.amountStr}}
+        </text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{dailyList.length===0}}">
+    <text class="empty-text">暂无记录</text>
+    <text class="empty-hint">点击右下角 + 开始记账</text>
+  </view>
+
+  <!-- 浮动添加按钮 -->
+  <view class="fab" bindtap="goToAdd">+</view>
+</view>

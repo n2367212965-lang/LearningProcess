@@ -1,0 +1,80 @@
+.page {
+  padding: 32rpx;
+  min-height: 100vh;
+  background-color: #0f0f0f;
+}
+
+.month-nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32rpx;
+}
+
+.month-nav-btn {
+  font-size: 48rpx;
+  color: #f59e0b;
+  padding: 0 40rpx;
+  font-weight: 300;
+}
+
+.month-nav-text {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #ffffff;
+  min-width: 240rpx;
+  text-align: center;
+}
+
+.summary-card {
+  margin-bottom: 32rpx;
+}
+
+.summary-row {
+  display: flex;
+  align-items: center;
+}
+
+.summary-item {
+  flex: 1;
+  text-align: center;
+}
+
+.summary-label {
+  font-size: 24rpx;
+  color: #9ca3af;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.summary-amount {
+  font-size: 36rpx;
+  font-weight: 700;
+}
+
+.summary-divider {
+  width: 2rpx;
+  height: 64rpx;
+  background-color: #3a3a3a;
+}
+
+.chart-card {
+  margin-bottom: 32rpx;
+}
+
+.chart-title {
+  font-size: 28rpx;
+  color: #ffffff;
+  font-weight: 600;
+  margin-bottom: 24rpx;
+}
+
+.bar-chart {
+  width: 100%;
+  height: 400rpx;
+}
+
+.pie-chart {
+  width: 100%;
+  height: 400rpx;
+}
