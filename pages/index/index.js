@@ -1,5 +1,4 @@
-const storage = require("../../utils/storage");
-const { formatDateCN, formatAmount } = require("../../utils/util");
+const app = getApp();
 
 Page({
   data: {
@@ -10,29 +9,16 @@ Page({
     balanceStr: "0.00",
     balance: 0,
     dailyList: [],
-    categoryIcons: {
-      餐饮: "🍜",
-      交通: "🚗",
-      购物: "🛍️",
-      娱乐: "🎮",
-      住房: "🏠",
-      通讯: "📱",
-      医疗: "🏥",
-      教育: "📚",
-      人情: "🧧",
-      其他: "📦",
-      工资: "💰",
-      奖金: "🏆",
-      兼职: "💼",
-      红包: "🧧",
-      理财: "📈",
-    },
+    categoryIcons: {},
   },
 
   onLoad() {
     const now = new Date();
-    this.setData({ year: now.getFullYear(), month: now.getMonth() + 1 });
-    this.refresh();
+    this.setData({
+      year: now.getFullYear(),
+      month: now.getMonth() + 1,
+      categoryIcons: app.categoryIcons,
+    });
   },
 
   onShow() {
@@ -41,22 +27,22 @@ Page({
 
   refresh() {
     const { year, month } = this.data;
-    const summary = storage.getMonthSummary(year, month);
-    const dailyList = storage.getDailySummary(summary.records);
+    const summary = app.getMonthSummary(year, month);
+    const dailyList = app.getDailySummary(summary.records);
 
     dailyList.forEach((group) => {
-      group.dateCN = formatDateCN(group.date);
-      group.expenseStr = formatAmount(group.expense);
-      group.incomeStr = formatAmount(group.income);
+      group.dateCN = app.formatDateCN(group.date);
+      group.expenseStr = app.formatAmount(group.expense);
+      group.incomeStr = app.formatAmount(group.income);
       group.items.forEach((item) => {
-        item.amountStr = formatAmount(item.amount);
+        item.amountStr = app.formatAmount(item.amount);
       });
     });
 
     this.setData({
-      expenseStr: formatAmount(summary.totalExpense),
-      incomeStr: formatAmount(summary.totalIncome),
-      balanceStr: formatAmount(summary.totalIncome - summary.totalExpense),
+      expenseStr: app.formatAmount(summary.totalExpense),
+      incomeStr: app.formatAmount(summary.totalIncome),
+      balanceStr: app.formatAmount(summary.balance),
       balance: summary.balance,
       dailyList,
     });
@@ -86,21 +72,17 @@ Page({
 
   onDeleteRecord(e) {
     const id = e.currentTarget.dataset.id;
-    const that = this;
     wx.showModal({
       title: "删除记录",
       content: "确定删除这条记录吗？",
-      success(res) {
+      confirmColor: "#e8725c",
+      success: (res) => {
         if (res.confirm) {
-          storage.deleteRecord(id);
-          that.refresh();
+          app.deleteRecord(id);
+          this.refresh();
           wx.showToast({ title: "已删除", icon: "success" });
         }
       },
     });
-  },
-
-  goToAdd() {
-    wx.switchTab({ url: "/pages/add/add" });
   },
 });

@@ -1,112 +1,96 @@
-const storage = require('../../utils/storage')
+const app = getApp();
 
 Page({
   data: {
     expenseCategories: [],
-    incomeCategories: []
-  },
-
-  onLoad() {
-    this.loadCategories()
+    incomeCategories: [],
+    categoryIcons: {},
+    showAddModal: false,
+    addType: 0,
+    newCategory: "",
   },
 
   onShow() {
-    this.loadCategories()
-  },
-
-  loadCategories() {
     this.setData({
-      expenseCategories: storage.getCategories(0),
-      incomeCategories: storage.getCategories(1)
-    })
+      expenseCategories: app.getCategories(0),
+      incomeCategories: app.getCategories(1),
+      categoryIcons: app.categoryIcons,
+    });
   },
 
-  onAddExpense() {
-    this.showAddDialog(0)
+  showAddExpense() {
+    this.setData({ showAddModal: true, addType: 0, newCategory: "" });
   },
 
-  onAddIncome() {
-    this.showAddDialog(1)
+  showAddIncome() {
+    this.setData({ showAddModal: true, addType: 1, newCategory: "" });
   },
 
-  showAddDialog(type) {
-    const that = this
-    wx.showModal({
-      title: '新增分类',
-      editable: true,
-      placeholderText: '输入分类名称',
-      success(res) {
-        if (res.confirm && res.content.trim()) {
-          if (type === 0) {
-            storage.addCategory(0, res.content.trim())
-          } else {
-            storage.addCategory(1, res.content.trim())
-          }
-          that.loadCategories()
-          wx.showToast({ title: '添加成功', icon: 'success' })
-        }
-      }
-    })
+  onModalInput(e) {
+    this.setData({ newCategory: e.detail.value });
+  },
+
+  onModalConfirm() {
+    const { addType, newCategory } = this.data;
+    if (!newCategory.trim()) {
+      wx.showToast({ title: "请输入分类名", icon: "none" });
+      return;
+    }
+    const cats = app.addCategory(addType, newCategory.trim());
+    const key = addType === 1 ? "incomeCategories" : "expenseCategories";
+    this.setData({ [key]: cats, showAddModal: false, newCategory: "" });
+    wx.showToast({ title: "添加成功", icon: "success" });
+  },
+
+  onModalCancel() {
+    this.setData({ showAddModal: false, newCategory: "" });
   },
 
   onDeleteCategory(e) {
-    const type = parseInt(e.currentTarget.dataset.type)
-    const name = e.currentTarget.dataset.name
-    const that = this
+    const { type, name } = e.currentTarget.dataset;
     wx.showModal({
-      title: '删除分类',
-      content: `确定删除「${name}」吗？已有该分类的记录仍会保留。`,
-      success(res) {
+      title: "删除分类",
+      content: `确定删除「${name}」吗？`,
+      confirmColor: "#e8725c",
+      success: (res) => {
         if (res.confirm) {
-          storage.deleteCategory(type, name)
-          that.loadCategories()
-          wx.showToast({ title: '已删除', icon: 'success' })
+          const cats = app.deleteCategory(type, name);
+          const key = type === 1 ? "incomeCategories" : "expenseCategories";
+          this.setData({ [key]: cats });
         }
-      }
-    })
+      },
+    });
   },
 
-  onResetExpense() {
-    const that = this
+  onResetCategories(e) {
+    const type = parseInt(e.currentTarget.dataset.type);
+    const label = type === 1 ? "收入" : "支出";
     wx.showModal({
-      title: '重置分类',
-      content: '重置为默认分类，将删除所有自定义支出分类？',
-      success(res) {
+      title: "重置分类",
+      content: `确定将${label}分类恢复为默认吗？`,
+      confirmColor: "#e8725c",
+      success: (res) => {
         if (res.confirm) {
-          storage.resetCategories(0)
-          that.loadCategories()
-          wx.showToast({ title: '已重置', icon: 'success' })
+          const cats = app.resetCategories(type);
+          const key = type === 1 ? "incomeCategories" : "expenseCategories";
+          this.setData({ [key]: cats });
+          wx.showToast({ title: "已重置", icon: "success" });
         }
-      }
-    })
-  },
-
-  onResetIncome() {
-    const that = this
-    wx.showModal({
-      title: '重置分类',
-      content: '重置为默认分类，将删除所有自定义收入分类？',
-      success(res) {
-        if (res.confirm) {
-          storage.resetCategories(1)
-          that.loadCategories()
-          wx.showToast({ title: '已重置', icon: 'success' })
-        }
-      }
-    })
+      },
+    });
   },
 
   onClearData() {
-    const that = this
     wx.showModal({
-      title: '清除数据',
-      content: '确定清除所有账单数据吗？此操作不可恢复！',
-      success(res) {
+      title: "清除所有数据",
+      content: "此操作不可恢复，确定清除全部账单记录吗？",
+      confirmColor: "#e8725c",
+      success: (res) => {
         if (res.confirm) {
-          storage.saveRecords([])
-          wx.showToast({ title: '已清除', icon: 'success' })
+          app.clearAllData();
+          wx.showToast({ title: "已清除", icon: "success" });
         }
-      }
-    })
-  }
-})
+      },
+    });
+  },
+});

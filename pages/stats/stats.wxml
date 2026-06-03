@@ -1,13 +1,20 @@
 <view class="page">
-  <!-- 月份切换 -->
-  <view class="month-nav-bar">
-    <view class="month-nav-btn" bindtap="prevMonth">‹</view>
-    <text class="month-nav-text">{{year}}年{{month}}月</text>
-    <view class="month-nav-btn" bindtap="nextMonth">›</view>
+  <!-- 月份导航 -->
+  <view class="month-nav">
+    <view class="nav-btn" bindtap="prevMonth">
+      <text class="nav-arrow">‹</text>
+    </view>
+    <view class="month-center">
+      <text class="month-year">{{year}}</text>
+      <text class="month-label">{{month}}月</text>
+    </view>
+    <view class="nav-btn" bindtap="nextMonth">
+      <text class="nav-arrow">›</text>
+    </view>
   </view>
 
-  <!-- 月度汇总卡片 -->
-  <view class="summary-card card">
+  <!-- 月度汇总 -->
+  <view class="summary card">
     <view class="summary-row">
       <view class="summary-item">
         <text class="summary-label">收入</text>
@@ -26,15 +33,68 @@
     </view>
   </view>
 
-  <!-- 柱状图 -->
-  <view class="chart-card card">
-    <view class="chart-title">每日收支</view>
-    <canvas class="bar-chart" canvas-id="barChart"></canvas>
+  <view wx:if="{{hasData}}">
+    <!-- 快速洞察 -->
+    <view class="insight-row">
+      <view class="insight-card card">
+        <text class="insight-icon">📅</text>
+        <text class="insight-value">{{dayCount}}</text>
+        <text class="insight-label">消费天数</text>
+      </view>
+      <view class="insight-card card">
+        <text class="insight-icon">🧾</text>
+        <text class="insight-value">{{recordCount}}</text>
+        <text class="insight-label">记账笔数</text>
+      </view>
+      <view class="insight-card card">
+        <text class="insight-icon">💡</text>
+        <text class="insight-value">¥{{avgDaily}}</text>
+        <text class="insight-label">日均支出</text>
+      </view>
+    </view>
+
+    <!-- 最大支出 -->
+    <view class="top-expense card">
+      <view class="top-header">
+        <text class="top-title">最大支出</text>
+        <text class="top-badge">TOP 1</text>
+      </view>
+      <view class="top-body">
+        <view class="top-icon expense">{{maxExpense.icon}}</view>
+        <view class="top-info">
+          <text class="top-category">{{maxExpense.category}}</text>
+          <text class="top-amount expense">¥{{maxExpense.amount}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 支出分类排行 -->
+    <view class="rank-card card">
+      <text class="section-title">支出分类</text>
+      <view class="rank-list">
+        <view class="rank-item" wx:for="{{categoryList}}" wx:key="category">
+          <view class="rank-left">
+            <view class="rank-icon expense">{{item.icon}}</view>
+            <view class="rank-info">
+              <view class="rank-name-row">
+                <text class="rank-name">{{item.category}}</text>
+                <text class="rank-pct">{{item.pct}}%</text>
+              </view>
+              <view class="rank-bar-bg">
+                <view class="rank-bar" style="width:{{item.barWidth}}%"></view>
+              </view>
+            </view>
+          </view>
+          <text class="rank-amount">¥{{item.amountStr}}</text>
+        </view>
+      </view>
+    </view>
   </view>
 
-  <!-- 饼图 -->
-  <view class="chart-card card">
-    <view class="chart-title">支出分类</view>
-    <canvas class="pie-chart" canvas-id="pieChart"></canvas>
+  <!-- 空状态 -->
+  <view class="empty" wx:else>
+    <view class="empty-icon">📊</view>
+    <text class="empty-text">本月暂无数据</text>
+    <text class="empty-hint">记账后即可查看统计</text>
   </view>
 </view>

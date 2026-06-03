@@ -1,4 +1,21 @@
+# Dependencies
 node_modules/
-.project.private.config.json
+
+# WeChat DevTools local config (contains user-specific settings)
+project.private.config.json
+project.private.config.js
+
+# Trae IDE config (skills, rules, agent settings)
+.trae/
+
+# Internal planning docs (not meant for public repo)
+docs/
+
+# OS / editor temp files
 .DS_Store
+Thumbs.db
 *.log
+*.swp
+*.swo
+.idea/
+.vscode/

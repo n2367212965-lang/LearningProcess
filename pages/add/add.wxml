@@ -1,48 +1,54 @@
 <view class="page">
   <!-- 收支切换 -->
-  <view class="type-switcher">
-    <view class="type-btn {{type===0?'active expense':''}}" bindtap="switchType" data-type="0">支出</view>
-    <view class="type-btn {{type===1?'active income':''}}" bindtap="switchType" data-type="1">收入</view>
+  <view class="type-switch">
+    <view class="type-btn {{type===0?'active expense':''}}" data-type="0" bindtap="switchType">支出</view>
+    <view class="type-btn {{type===1?'active income':''}}" data-type="1" bindtap="switchType">收入</view>
   </view>
 
   <!-- 金额输入 -->
-  <view class="amount-section">
-    <text class="amount-label">¥</text>
-    <input class="amount-input" type="digit" value="{{amount}}" bindinput="onAmountInput" placeholder="0.00" placeholder-class="placeholder" focus="{{true}}" />
+  <view class="amount-section card">
+    <text class="currency">¥</text>
+    <input class="amount-input" type="digit" value="{{amount}}" bindinput="onAmountInput"
+      placeholder="0.00" placeholder-class="amount-placeholder" />
+    <view class="amount-line {{type===0?'expense':'income'}}"></view>
   </view>
 
   <!-- 分类选择 -->
-  <view class="section">
-    <view class="section-title">分类</view>
+  <view class="category-section card">
+    <text class="section-title">选择分类</text>
     <view class="category-grid">
-      <view
-        class="category-item {{selectedCategory===item?'selected':''}}"
-        wx:for="{{categories}}"
-        wx:key="item"
-        bindtap="selectCategory" data-category="{{item}}"
-      >
-        <view class="category-icon {{type===0?'expense':'income'}}">{{categoryIcons[item] || '📦'}}</view>
-        <text class="category-name">{{item}}</text>
+      <view class="category-item {{selectedCategory===item?'selected':''}}"
+        wx:for="{{categories}}" wx:key="*this"
+        data-category="{{item}}" bindtap="selectCategory">
+        <view class="cat-icon {{type===0?'expense':'income'}}">
+          {{categoryIcons[item] || '📦'}}
+        </view>
+        <text class="cat-name">{{item}}</text>
       </view>
     </view>
   </view>
 
-  <!-- 日期 -->
-  <view class="section">
-    <view class="section-title">日期</view>
-    <picker mode="date" value="{{date}}" bindchange="onDateChange">
-      <view class="picker-display">{{date}}</view>
-    </picker>
-  </view>
-
-  <!-- 备注 -->
-  <view class="section">
-    <view class="section-title">备注</view>
-    <input class="note-input" value="{{note}}" bindinput="onNoteInput" placeholder="可选" placeholder-class="placeholder" />
+  <!-- 日期和备注 -->
+  <view class="detail-section card">
+    <view class="detail-row">
+      <text class="detail-label">日期</text>
+      <picker mode="date" value="{{date}}" bindchange="onDateChange">
+        <view class="detail-value">
+          <text>{{date}}</text>
+          <text class="detail-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+    <view class="detail-divider"></view>
+    <view class="detail-row">
+      <text class="detail-label">备注</text>
+      <input class="detail-input" value="{{note}}" bindinput="onNoteInput"
+        placeholder="添加备注" placeholder-class="detail-placeholder" />
+    </view>
   </view>
 
   <!-- 保存按钮 -->
   <view class="save-btn {{type===0?'expense':'income'}}" bindtap="onSave">
-    保存
+    {{editId?'修改记录':'保存记录'}}
   </view>
 </view>

@@ -1,7 +1,13 @@
 {
   "description": "个人记账本",
+  "miniprogramBaseLibraryVersion": "2.11.0",
   "packOptions": {
-    "ignore": [],
+    "ignore": [
+      {
+        "type": "folder",
+        "value": ".trae"
+      }
+    ],
     "include": []
   },
   "setting": {

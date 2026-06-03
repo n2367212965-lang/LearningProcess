@@ -1,80 +1,346 @@
 .page {
   padding: 32rpx;
   min-height: 100vh;
-  background-color: #0f0f0f;
+  background: linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-base) 30%);
 }
 
-.month-nav-bar {
+/* ---- 月份导航 ---- */
+.month-nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 32rpx;
+  margin-bottom: 24rpx;
 }
 
-.month-nav-btn {
-  font-size: 48rpx;
-  color: #f59e0b;
-  padding: 0 40rpx;
+.nav-btn {
+  padding: 12rpx 32rpx;
+}
+
+.nav-arrow {
+  font-size: 44rpx;
+  color: var(--accent-gold);
   font-weight: 300;
+  opacity: 0.8;
 }
 
-.month-nav-text {
-  font-size: 34rpx;
-  font-weight: 600;
-  color: #ffffff;
-  min-width: 240rpx;
-  text-align: center;
+.month-center {
+  display: flex;
+  align-items: baseline;
+  min-width: 200rpx;
+  justify-content: center;
 }
 
-.summary-card {
-  margin-bottom: 32rpx;
+.month-year {
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  margin-right: 8rpx;
+}
+
+.month-label {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 2rpx;
+}
+
+/* ---- 月度汇总 ---- */
+.summary {
+  margin-bottom: 28rpx;
+  position: relative;
+  overflow: hidden;
+}
+
+.summary::before {
+  content: "";
+  position: absolute;
+  top: -40rpx;
+  left: -40rpx;
+  width: 160rpx;
+  height: 160rpx;
+  background: radial-gradient(
+    circle,
+    var(--color-income-soft),
+    transparent 70%
+  );
+  pointer-events: none;
 }
 
 .summary-row {
   display: flex;
   align-items: center;
 }
-
 .summary-item {
   flex: 1;
   text-align: center;
 }
 
 .summary-label {
-  font-size: 24rpx;
-  color: #9ca3af;
+  font-size: 22rpx;
+  color: var(--text-tertiary);
+  display: block;
+  margin-bottom: 10rpx;
+  letter-spacing: 2rpx;
+}
+
+.summary-amount {
+  font-size: 34rpx;
+  font-weight: 700;
+  letter-spacing: 1rpx;
+}
+
+.summary-amount.income {
+  color: var(--color-income);
+}
+.summary-amount.expense {
+  color: var(--color-expense);
+}
+
+.summary-divider {
+  width: 1rpx;
+  height: 56rpx;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    var(--border-card),
+    transparent
+  );
+}
+
+/* ---- 快速洞察 ---- */
+.insight-row {
+  display: flex;
+  margin-bottom: 28rpx;
+}
+
+.insight-card {
+  flex: 1;
+  text-align: center;
+  padding: 28rpx 16rpx;
+  margin: 0 6rpx;
+}
+
+.insight-card:first-child {
+  margin-left: 0;
+}
+.insight-card:last-child {
+  margin-right: 0;
+}
+
+.insight-icon {
+  font-size: 36rpx;
   display: block;
   margin-bottom: 8rpx;
 }
 
-.summary-amount {
+.insight-value {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: block;
+  letter-spacing: 1rpx;
+}
+
+.insight-label {
+  font-size: 20rpx;
+  color: var(--text-tertiary);
+  display: block;
+  margin-top: 4rpx;
+  letter-spacing: 1rpx;
+}
+
+/* ---- 最大支出 ---- */
+.top-expense {
+  margin-bottom: 28rpx;
+}
+
+.top-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+
+.top-title {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+  font-weight: 500;
+  letter-spacing: 1rpx;
+}
+
+.top-badge {
+  font-size: 20rpx;
+  color: var(--accent-gold);
+  background: var(--accent-gold-soft);
+  padding: 4rpx 16rpx;
+  border-radius: var(--radius-full);
+  letter-spacing: 1rpx;
+  font-weight: 600;
+}
+
+.top-body {
+  display: flex;
+  align-items: center;
+}
+
+.top-icon {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  margin-right: 24rpx;
+}
+
+.top-icon.expense {
+  background: var(--color-expense-soft);
+}
+
+.top-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.top-category {
+  font-size: 28rpx;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.top-amount {
   font-size: 36rpx;
   font-weight: 700;
+  margin-top: 4rpx;
 }
 
-.summary-divider {
-  width: 2rpx;
-  height: 64rpx;
-  background-color: #3a3a3a;
+.top-amount.expense {
+  color: var(--color-expense);
 }
 
-.chart-card {
+/* ---- 分类排行 ---- */
+.rank-card {
   margin-bottom: 32rpx;
 }
 
-.chart-title {
-  font-size: 28rpx;
-  color: #ffffff;
-  font-weight: 600;
+.section-title {
+  font-size: 26rpx;
+  color: var(--text-secondary);
+  font-weight: 500;
+  display: block;
+  margin-bottom: 24rpx;
+  letter-spacing: 1rpx;
+}
+
+.rank-list {
+  /* list container */
+}
+
+.rank-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 24rpx;
 }
 
-.bar-chart {
-  width: 100%;
-  height: 400rpx;
+.rank-item:last-child {
+  margin-bottom: 0;
 }
 
-.pie-chart {
-  width: 100%;
-  height: 400rpx;
+.rank-left {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  margin-right: 20rpx;
+}
+
+.rank-icon {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  margin-right: 16rpx;
+  flex-shrink: 0;
+}
+
+.rank-icon.expense {
+  background: var(--color-expense-soft);
+}
+
+.rank-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.rank-name-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8rpx;
+}
+
+.rank-name {
+  font-size: 26rpx;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.rank-pct {
+  font-size: 22rpx;
+  color: var(--text-tertiary);
+}
+
+.rank-bar-bg {
+  height: 8rpx;
+  background: var(--border-subtle);
+  border-radius: 4rpx;
+  overflow: hidden;
+}
+
+.rank-bar {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--color-expense),
+    rgba(232, 114, 92, 0.4)
+  );
+  border-radius: 4rpx;
+}
+
+.rank-amount {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--color-expense);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ---- 空状态 ---- */
+.empty {
+  text-align: center;
+  padding-top: 80rpx;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 24rpx;
+  opacity: 0.5;
+}
+
+.empty-text {
+  font-size: 30rpx;
+  color: var(--text-secondary);
+  display: block;
+  letter-spacing: 2rpx;
+}
+
+.empty-hint {
+  font-size: 24rpx;
+  color: var(--text-tertiary);
+  display: block;
+  margin-top: 12rpx;
 }

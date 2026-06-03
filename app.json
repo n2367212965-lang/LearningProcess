@@ -6,9 +6,9 @@
     "pages/settings/settings"
   ],
   "tabBar": {
-    "color": "#9ca3af",
-    "selectedColor": "#f59e0b",
-    "backgroundColor": "#1a1a1a",
+    "color": "#514f5e",
+    "selectedColor": "#c9a87c",
+    "backgroundColor": "#080b14",
     "borderStyle": "black",
     "list": [
       {
@@ -31,17 +31,17 @@
       },
       {
         "pagePath": "pages/settings/settings",
-        "text": "我的",
+        "text": "设置",
         "iconPath": "images/mine.png",
         "selectedIconPath": "images/mine_active.png"
       }
     ]
   },
   "window": {
-    "navigationBarBackgroundColor": "#0f0f0f",
+    "navigationBarBackgroundColor": "#080b14",
     "navigationBarTitleText": "记账本",
     "navigationBarTextStyle": "white",
-    "backgroundColor": "#0f0f0f"
+    "backgroundColor": "#080b14"
   },
   "sitemapLocation": "sitemap.json"
 }
