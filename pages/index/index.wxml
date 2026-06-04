@@ -44,7 +44,7 @@
         </view>
       </view>
       <view class="record-item" wx:for="{{item.items}}" wx:key="id"
-        data-id="{{item.id}}" bindlongpress="onDeleteRecord">
+        data-id="{{item.id}}" bindlongpress="onLongPressRecord">
         <view class="record-left">
           <view class="record-icon {{item.type===0?'expense':'income'}}">
             {{categoryIcons[item.category] || '📦'}}
@@ -66,5 +66,13 @@
     <view class="empty-icon">📝</view>
     <text class="empty-text">本月暂无记录</text>
     <text class="empty-hint">点击下方「记账」开始记录</text>
+  </view>
+
+  <!-- FAB 快速记账：下滑隐藏、上滑显示，点击直达记账 tab -->
+  <view class="fab {{!fabVisible ? 'fab--hidden' : ''}}" bindtap="onFabTap" hover-class="fab--press">
+    <view class="fab-plus">
+      <view class="fab-plus-h"></view>
+      <view class="fab-plus-v"></view>
+    </view>
   </view>
 </view>

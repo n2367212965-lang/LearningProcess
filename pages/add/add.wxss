@@ -56,15 +56,20 @@
 
 .amount-input {
   flex: 1;
-  font-size: 72rpx;
+  min-width: 0; /* 允许 flex 子项收缩到内容以下（默认是 min-width: auto） */
+  max-width: 100%;
+  font-size: 48rpx; /* 偏小：4 位数（9999）也留余量；>4 位由 JS 动态缩 */
   font-weight: 700;
   color: var(--text-primary);
-  letter-spacing: 2rpx;
+  text-align: right; /* 金额输入右对齐，与光标自然靠右 */
+  /* 注意：<input> 是微信原生组件，overflow/text-overflow 对其内部文字无效。
+     防溢出只能靠缩小字号 + flex 收缩（min-width:0）。 */
 }
 
 .amount-placeholder {
   color: var(--text-tertiary);
-  font-size: 48rpx;
+  font-size: 40rpx;
+  text-align: right;
 }
 
 .amount-line {
@@ -76,8 +81,12 @@
   border-radius: 2rpx;
 }
 
-.amount-line.expense { background: var(--color-expense); }
-.amount-line.income { background: var(--color-income); }
+.amount-line.expense {
+  background: var(--color-expense);
+}
+.amount-line.income {
+  background: var(--color-income);
+}
 
 /* ---- 分类选择 ---- */
 .category-section {
@@ -126,8 +135,12 @@
   border: 2rpx solid transparent;
 }
 
-.cat-icon.expense { background: var(--color-expense-soft); }
-.cat-icon.income { background: var(--color-income-soft); }
+.cat-icon.expense {
+  background: var(--color-expense-soft);
+}
+.cat-icon.income {
+  background: var(--color-income-soft);
+}
 
 .cat-name {
   font-size: 22rpx;
@@ -205,4 +218,36 @@
 .save-btn:active {
   opacity: 0.85;
   transform: scale(0.98);
+}
+
+/* ---- 预算提示 ---- */
+.budget-hint {
+  margin-bottom: 24rpx;
+  padding: 20rpx 28rpx;
+}
+.budget-hint-bar-bg {
+  height: 12rpx;
+  background: var(--border-subtle);
+  border-radius: 6rpx;
+  overflow: hidden;
+  margin-bottom: 12rpx;
+}
+.budget-hint-bar-fill {
+  height: 100%;
+  border-radius: 6rpx;
+  transition: width 0.3s;
+}
+.budget-hint-bar-fill.budget-hint-ok {
+  background: var(--color-income);
+}
+.budget-hint-bar-fill.budget-hint-warn {
+  background: #e8a23c;
+}
+.budget-hint-bar-fill.budget-hint-over {
+  background: var(--color-expense);
+}
+.budget-hint-text {
+  font-size: 22rpx;
+  color: var(--text-secondary);
+  letter-spacing: 1rpx;
 }

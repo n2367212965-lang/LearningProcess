@@ -4,6 +4,33 @@
   background: linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-base) 30%);
 }
 
+/* ---- 模式切换 ---- */
+.mode-switch {
+  display: flex;
+  background: var(--bg-card);
+  border-radius: var(--radius-full);
+  padding: 6rpx;
+  margin-bottom: 20rpx;
+  border: 1rpx solid var(--border-subtle);
+}
+
+.mode-btn {
+  flex: 1;
+  text-align: center;
+  padding: 14rpx 0;
+  border-radius: var(--radius-full);
+  font-size: 26rpx;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  letter-spacing: 2rpx;
+}
+
+.mode-btn.active {
+  background: var(--accent-gold-soft);
+  color: var(--accent-gold);
+  box-shadow: 0 0 16rpx var(--accent-gold-soft);
+}
+
 /* ---- 月份导航 ---- */
 .month-nav {
   display: flex;
@@ -106,134 +133,331 @@
   );
 }
 
-/* ---- 快速洞察 ---- */
-.insight-row {
+/* ---- 1) 核心 KPI 行 ---- */
+.kpi-row {
   display: flex;
   margin-bottom: 28rpx;
 }
 
-.insight-card {
+.kpi-card {
   flex: 1;
   text-align: center;
-  padding: 28rpx 16rpx;
+  padding: 24rpx 12rpx;
   margin: 0 6rpx;
+  position: relative;
+  overflow: hidden;
 }
 
-.insight-card:first-child {
+.kpi-card:first-child {
   margin-left: 0;
 }
-.insight-card:last-child {
+.kpi-card:last-child {
   margin-right: 0;
 }
 
-.insight-icon {
-  font-size: 36rpx;
+.kpi-icon {
+  font-size: 32rpx;
   display: block;
-  margin-bottom: 8rpx;
+  margin-bottom: 6rpx;
 }
 
-.insight-value {
-  font-size: 28rpx;
-  font-weight: 700;
-  color: var(--text-primary);
+.kpi-value {
+  font-size: 36rpx;
+  font-weight: 800;
   display: block;
   letter-spacing: 1rpx;
+  line-height: 1.2;
 }
 
-.insight-label {
-  font-size: 20rpx;
-  color: var(--text-tertiary);
+.kpi-label {
+  font-size: 22rpx;
   display: block;
   margin-top: 4rpx;
   letter-spacing: 1rpx;
+  color: var(--text-secondary);
 }
 
-/* ---- 最大支出 ---- */
-.top-expense {
+.kpi-hint {
+  font-size: 18rpx;
+  color: var(--text-tertiary);
+  display: block;
+  margin-top: 2rpx;
+}
+
+/* KPI 颜色变体 */
+.kpi-good .kpi-value {
+  color: var(--color-income);
+}
+.kpi-warn .kpi-value {
+  color: #e8a23c;
+}
+.kpi-bad .kpi-value {
+  color: var(--color-expense);
+}
+.kpi-up .kpi-value {
+  color: var(--color-expense);
+}
+.kpi-down .kpi-value {
+  color: var(--color-income);
+}
+.kpi-flat .kpi-value {
+  color: var(--text-secondary);
+}
+.kpi-avg .kpi-value {
+  color: var(--accent-gold);
+  font-size: 32rpx;
+}
+
+/* ---- 2) 储蓄率进度条 ---- */
+.progress-card {
   margin-bottom: 28rpx;
 }
 
-.top-header {
+.progress-head {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: baseline;
   margin-bottom: 20rpx;
 }
 
-.top-title {
+.progress-title {
   font-size: 26rpx;
   color: var(--text-secondary);
   font-weight: 500;
   letter-spacing: 1rpx;
 }
 
-.top-badge {
+.progress-meta {
   font-size: 20rpx;
-  color: var(--accent-gold);
-  background: var(--accent-gold-soft);
-  padding: 4rpx 16rpx;
-  border-radius: var(--radius-full);
-  letter-spacing: 1rpx;
+  color: var(--text-tertiary);
+}
+
+.progress-bar-bg {
+  position: relative;
+  height: 20rpx;
+  background: var(--border-subtle);
+  border-radius: 10rpx;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 10rpx;
+  transition: width 0.3s ease;
+}
+
+.progress-bar-fill.progress-good {
+  background: linear-gradient(90deg, #51cf66, #2f9e44);
+}
+.progress-bar-fill.progress-warn {
+  background: linear-gradient(90deg, #ffd43b, #e8a23c);
+}
+.progress-bar-fill.progress-bad {
+  background: linear-gradient(90deg, #ff6b6b, #e03131);
+}
+
+.progress-mark {
+  position: absolute;
+  top: -4rpx;
+  bottom: -4rpx;
+  width: 2rpx;
+  background: var(--text-primary);
+  opacity: 0.35;
+}
+
+.progress-foot {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10rpx;
+  font-size: 20rpx;
+  color: var(--text-tertiary);
+}
+
+.progress-status {
   font-weight: 600;
 }
 
-.top-body {
+/* ---- 通用 section 头 ---- */
+.section-head {
   display: flex;
-  align-items: center;
-}
-
-.top-icon {
-  width: 80rpx;
-  height: 80rpx;
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 40rpx;
-  margin-right: 24rpx;
-}
-
-.top-icon.expense {
-  background: var(--color-expense-soft);
-}
-
-.top-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.top-category {
-  font-size: 28rpx;
-  color: var(--text-primary);
-  font-weight: 500;
-}
-
-.top-amount {
-  font-size: 36rpx;
-  font-weight: 700;
-  margin-top: 4rpx;
-}
-
-.top-amount.expense {
-  color: var(--color-expense);
-}
-
-/* ---- 分类排行 ---- */
-.rank-card {
-  margin-bottom: 32rpx;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 24rpx;
 }
 
 .section-title {
   font-size: 26rpx;
   color: var(--text-secondary);
   font-weight: 500;
+  letter-spacing: 1rpx;
   display: block;
-  margin-bottom: 24rpx;
+}
+
+.section-meta {
+  font-size: 20rpx;
+  color: var(--text-tertiary);
+}
+
+.section-legend {
+  display: flex;
+  align-items: center;
+  font-size: 20rpx;
+  color: var(--text-tertiary);
+}
+
+.legend-dot {
+  display: inline-block;
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: 50%;
+  margin: 0 4rpx 0 12rpx;
+}
+
+.legend-dot.legend-income {
+  background: var(--color-income);
+}
+.legend-dot.legend-expense {
+  background: var(--color-expense);
+}
+
+/* ---- 3) 趋势柱状图 ---- */
+.trend-card {
+  margin-bottom: 28rpx;
+}
+
+.trend-bars {
+  display: flex;
+  align-items: flex-end;
+  height: 200rpx;
+  padding: 0 4rpx;
+  gap: 12rpx;
+}
+
+.trend-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.trend-stack {
+  width: 80%;
+  display: flex;
+  flex-direction: column-reverse; /* 支出在下，收入在上 */
+  border-radius: 6rpx 6rpx 0 0;
+  overflow: hidden;
+  min-height: 4rpx;
+}
+
+.trend-seg {
+  width: 100%;
+  transition: all 0.3s;
+}
+
+.trend-seg-expense {
+  background: linear-gradient(180deg, #ff8787, var(--color-expense));
+}
+
+.trend-seg-income {
+  background: linear-gradient(180deg, #69db7c, var(--color-income));
+}
+
+.trend-label {
+  font-size: 20rpx;
+  color: var(--text-tertiary);
+  margin-top: 8rpx;
   letter-spacing: 1rpx;
 }
 
-.rank-list {
-  /* list container */
+/* ---- 4) 分类饼图 ---- */
+.pie-card {
+  margin-bottom: 28rpx;
+}
+
+.pie-wrap {
+  display: flex;
+  align-items: center;
+  gap: 32rpx;
+}
+
+.pie-chart {
+  width: 220rpx;
+  height: 220rpx;
+  border-radius: 50%;
+  position: relative;
+  flex-shrink: 0;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.06);
+}
+
+.pie-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  background: var(--bg-card);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.pie-center-label {
+  font-size: 18rpx;
+  color: var(--text-tertiary);
+  letter-spacing: 1rpx;
+}
+
+.pie-center-value {
+  font-size: 24rpx;
+  font-weight: 700;
+  color: var(--color-expense);
+  margin-top: 2rpx;
+}
+
+.pie-legend {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14rpx;
+  min-width: 0;
+}
+
+.pie-legend-item {
+  display: flex;
+  align-items: center;
+  font-size: 22rpx;
+}
+
+.legend-swatch {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 4rpx;
+  margin-right: 10rpx;
+  flex-shrink: 0;
+}
+
+.legend-text {
+  flex: 1;
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.legend-pct {
+  color: var(--text-primary);
+  font-weight: 600;
+  margin-left: 8rpx;
+}
+
+/* ---- 5) 分类排行（Top 5 + 其他） ---- */
+.rank-card {
+  margin-bottom: 32rpx;
 }
 
 .rank-item {
@@ -343,4 +567,68 @@
   color: var(--text-tertiary);
   display: block;
   margin-top: 12rpx;
+}
+
+/* ---- 预算警告 ---- */
+.budget-warn-card {
+  margin-bottom: 28rpx;
+}
+
+.budget-warn-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.budget-warn-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16rpx 20rpx;
+  background: var(--bg-card-hover);
+  border-radius: var(--radius-md);
+  border: 1rpx solid var(--border-subtle);
+  border-left: 6rpx solid var(--color-income);
+}
+.budget-warn-warn {
+  border-left-color: #e8a23c;
+}
+.budget-warn-over {
+  border-left-color: var(--color-expense);
+  background: var(--color-expense-soft);
+}
+
+.budget-warn-left {
+  display: flex;
+  align-items: center;
+}
+.budget-warn-icon {
+  font-size: 32rpx;
+  margin-right: 12rpx;
+}
+.budget-warn-cat {
+  font-size: 26rpx;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.budget-warn-right {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+.budget-warn-amount {
+  font-size: 22rpx;
+  color: var(--text-secondary);
+}
+.budget-warn-pct {
+  font-size: 24rpx;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.budget-warn-over .budget-warn-pct {
+  color: var(--color-expense);
+}
+.budget-warn-warn .budget-warn-pct {
+  color: #e8a23c;
 }

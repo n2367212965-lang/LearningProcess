@@ -1,19 +1,25 @@
 <view class="page">
-  <!-- 月份导航 -->
+  <!-- 视图模式切换 -->
+  <view class="mode-switch">
+    <view class="mode-btn {{viewMode==='month'?'active':''}}" data-mode="month" bindtap="switchMode">月度</view>
+    <view class="mode-btn {{viewMode==='year'?'active':''}}" data-mode="year" bindtap="switchMode">年度</view>
+  </view>
+
+  <!-- 月份/年份导航 -->
   <view class="month-nav">
-    <view class="nav-btn" bindtap="prevMonth">
+    <view class="nav-btn" bindtap="prevPeriod">
       <text class="nav-arrow">‹</text>
     </view>
     <view class="month-center">
       <text class="month-year">{{year}}</text>
-      <text class="month-label">{{month}}月</text>
+      <text class="month-label" wx:if="{{viewMode==='month'}}">{{month}}月</text>
     </view>
-    <view class="nav-btn" bindtap="nextMonth">
+    <view class="nav-btn" bindtap="nextPeriod">
       <text class="nav-arrow">›</text>
     </view>
   </view>
 
-  <!-- 月度汇总 -->
+  <!-- 头部汇总 -->
   <view class="summary card">
     <view class="summary-row">
       <view class="summary-item">
@@ -34,43 +40,118 @@
   </view>
 
   <view wx:if="{{hasData}}">
-    <!-- 快速洞察 -->
-    <view class="insight-row">
-      <view class="insight-card card">
-        <text class="insight-icon">📅</text>
-        <text class="insight-value">{{dayCount}}</text>
-        <text class="insight-label">消费天数</text>
+    <!-- 1️⃣ 核心 KPI：储蓄率 / 环比 / 日均 -->
+    <view class="kpi-row">
+      <view class="kpi-card card kpi-saving kpi-{{savingRateClass}}">
+        <text class="kpi-icon">💰</text>
+        <text class="kpi-value">{{savingRate}}%</text>
+        <text class="kpi-label">储蓄率</text>
+        <text class="kpi-hint">结余/收入</text>
       </view>
-      <view class="insight-card card">
-        <text class="insight-icon">🧾</text>
-        <text class="insight-value">{{recordCount}}</text>
-        <text class="insight-label">记账笔数</text>
+      <view class="kpi-card card kpi-mom kpi-{{momClass}}" hidden="{{momHidden}}">
+        <text class="kpi-icon">{{momArrow}}</text>
+        <text class="kpi-value">{{momChange}}%</text>
+        <text class="kpi-label">环比支出</text>
+        <text class="kpi-hint">vs 上期</text>
       </view>
-      <view class="insight-card card">
-        <text class="insight-icon">💡</text>
-        <text class="insight-value">¥{{avgDaily}}</text>
-        <text class="insight-label">日均支出</text>
+      <view class="kpi-card card kpi-avg">
+        <text class="kpi-icon">📊</text>
+        <text class="kpi-value">¥{{avgDaily}}</text>
+        <text class="kpi-label">{{avgLabel}}</text>
+        <text class="kpi-hint">{{viewMode==='month'?'全月平均':'全年平均'}}</text>
       </view>
     </view>
 
-    <!-- 最大支出 -->
-    <view class="top-expense card">
-      <view class="top-header">
-        <text class="top-title">最大支出</text>
-        <text class="top-badge">TOP 1</text>
+    <!-- 2️⃣ 储蓄率进度条（暂代预算模块） -->
+    <view class="progress-card card">
+      <view class="progress-head">
+        <text class="progress-title">储蓄目标</text>
+        <text class="progress-meta">参考线 30%</text>
       </view>
-      <view class="top-body">
-        <view class="top-icon expense">{{maxExpense.icon}}</view>
-        <view class="top-info">
-          <text class="top-category">{{maxExpense.category}}</text>
-          <text class="top-amount expense">¥{{maxExpense.amount}}</text>
+      <view class="progress-bar-bg">
+        <view class="progress-bar-fill progress-{{savingRateClass}}" style="width:{{savingProgress}}%"></view>
+        <view class="progress-mark" style="left:30%"></view>
+      </view>
+      <view class="progress-foot">
+        <text>0%</text>
+        <text class="progress-status">
+          <block wx:if="{{savingRateClass==='good'}}">✓ 健康储蓄</block>
+          <block wx:elif="{{savingRateClass==='warn'}}">⚠ 偏紧</block>
+          <block wx:else>⚠ 超支</block>
+        </text>
+        <text>100%</text>
+      </view>
+    </view>
+
+    <!-- 3️⃣ 6 个月趋势柱状图 -->
+    <view class="trend-card card">
+      <view class="section-head">
+        <text class="section-title">收支趋势</text>
+        <text class="section-legend">
+          <text class="legend-dot legend-income"></text>收入
+          <text class="legend-dot legend-expense"></text>支出
+        </text>
+      </view>
+      <view class="trend-bars">
+        <view class="trend-col" wx:for="{{trend}}" wx:key="label">
+          <view class="trend-stack" style="height:{{item.barHeight}}%">
+            <view class="trend-seg trend-seg-expense" style="flex:{{item.expense>0?item.expense:0.0001}}"></view>
+            <view class="trend-seg trend-seg-income" style="flex:{{item.income>0?item.income:0.0001}}"></view>
+          </view>
+          <text class="trend-label">{{item.label}}</text>
         </view>
       </view>
     </view>
 
-    <!-- 支出分类排行 -->
+    <!-- 4️⃣ 分类饼图 + 图例 -->
+    <view class="pie-card card" wx:if="{{pieSlices.length>0}}">
+      <view class="section-head">
+        <text class="section-title">支出占比</text>
+      </view>
+      <view class="pie-wrap">
+        <view class="pie-chart" style="background:{{pieBg}}">
+          <view class="pie-center">
+            <text class="pie-center-label">总支出</text>
+            <text class="pie-center-value">¥{{expenseStr}}</text>
+          </view>
+        </view>
+        <view class="pie-legend">
+          <view class="pie-legend-item" wx:for="{{pieSlices}}" wx:key="category">
+            <view class="legend-swatch" style="background:{{item.color}}"></view>
+            <text class="legend-text">{{item.icon}} {{item.category}}</text>
+            <text class="legend-pct">{{item.pct}}%</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 4.5️⃣ 分类预算警告（仅月度模式且有警告时显示） -->
+    <view class="budget-warn-card card" wx:if="{{viewMode==='month' && budgetWarnings.length>0}}">
+      <view class="section-head">
+        <text class="section-title">预算预警</text>
+        <text class="section-meta">已花 / 预算</text>
+      </view>
+      <view class="budget-warn-list">
+        <view class="budget-warn-item budget-warn-{{item.status}}"
+          wx:for="{{budgetWarnings}}" wx:key="category">
+          <view class="budget-warn-left">
+            <text class="budget-warn-icon">{{item.icon}}</text>
+            <text class="budget-warn-cat">{{item.category}}</text>
+          </view>
+          <view class="budget-warn-right">
+            <text class="budget-warn-amount">¥{{item.spent}} / ¥{{item.budget}}</text>
+            <text class="budget-warn-pct">{{item.pct}}%</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 5️⃣ Top 5 分类排行 -->
     <view class="rank-card card">
-      <text class="section-title">支出分类</text>
+      <view class="section-head">
+        <text class="section-title">分类排行</text>
+        <text class="section-meta">按金额降序</text>
+      </view>
       <view class="rank-list">
         <view class="rank-item" wx:for="{{categoryList}}" wx:key="category">
           <view class="rank-left">
@@ -94,7 +175,7 @@
   <!-- 空状态 -->
   <view class="empty" wx:else>
     <view class="empty-icon">📊</view>
-    <text class="empty-text">本月暂无数据</text>
+    <text class="empty-text">{{viewMode==='month'?'本月':'本年'}}暂无数据</text>
     <text class="empty-hint">记账后即可查看统计</text>
   </view>
 </view>

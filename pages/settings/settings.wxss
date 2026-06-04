@@ -6,14 +6,14 @@
 
 /* ---- 区块 ---- */
 .section {
-  margin-bottom: 28rpx;
+  margin-bottom: 24rpx;
 }
 
 .section-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 24rpx;
+  margin-bottom: 20rpx;
 }
 
 .section-title-row {
@@ -22,10 +22,10 @@
 }
 
 .section-dot {
-  width: 12rpx;
-  height: 12rpx;
+  width: 10rpx;
+  height: 10rpx;
   border-radius: 50%;
-  margin-right: 12rpx;
+  margin-right: 10rpx;
 }
 
 .section-dot.expense {
@@ -39,61 +39,63 @@
 }
 
 .section-title {
-  font-size: 28rpx;
+  font-size: 26rpx;
   font-weight: 600;
   color: var(--text-primary);
   letter-spacing: 1rpx;
 }
 
 .section-action {
-  font-size: 24rpx;
+  font-size: 22rpx;
   color: var(--accent-gold);
   letter-spacing: 1rpx;
 }
 
-/* ---- 分类列表 ---- */
-.cat-list {
-  margin-bottom: 20rpx;
+/* ---- 分类标签（堆叠布局） ---- */
+.cat-tags {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 16rpx;
 }
 
-.cat-item {
+.cat-tag {
   display: flex;
   align-items: center;
-  padding: 16rpx 0;
-  border-bottom: 1rpx solid var(--border-subtle);
-}
-
-.cat-item:last-child {
-  border-bottom: none;
+  background: var(--bg-card-hover);
+  border: 1rpx solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  padding: 8rpx 16rpx;
+  margin: 0 12rpx 12rpx 0;
 }
 
 .cat-emoji {
-  font-size: 28rpx;
-  margin-right: 12rpx;
+  font-size: 24rpx;
+  margin-right: 6rpx;
 }
 
-.cat-name {
-  flex: 1;
-  font-size: 26rpx;
+.cat-tag-name {
+  font-size: 24rpx;
   color: var(--text-primary);
+  margin-right: 4rpx;
 }
 
-.cat-delete {
-  font-size: 22rpx;
+.cat-tag-del {
+  font-size: 24rpx;
   color: var(--color-expense);
-  opacity: 0.7;
-  padding: 4rpx 12rpx;
+  opacity: 0.6;
+  padding: 0 4rpx;
+  line-height: 1;
 }
 
-.cat-delete:active {
+.cat-tag-del:active {
   opacity: 1;
 }
 
 .reset-link {
-  font-size: 22rpx;
+  font-size: 20rpx;
   color: var(--text-tertiary);
   text-align: center;
-  padding-top: 8rpx;
+  padding-top: 4rpx;
   letter-spacing: 1rpx;
 }
 
@@ -101,7 +103,7 @@
 .danger-zone {
   display: flex;
   align-items: center;
-  padding: 24rpx 20rpx;
+  padding: 20rpx 16rpx;
   background: var(--color-expense-soft);
   border-radius: var(--radius-md);
   border: 1rpx solid rgba(232, 114, 92, 0.2);
@@ -112,19 +114,19 @@
 }
 
 .danger-icon-wrap {
-  width: 56rpx;
-  height: 56rpx;
+  width: 48rpx;
+  height: 48rpx;
   border-radius: var(--radius-sm);
   background: rgba(232, 114, 92, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 20rpx;
+  margin-right: 16rpx;
   flex-shrink: 0;
 }
 
 .danger-icon {
-  font-size: 32rpx;
+  font-size: 28rpx;
 }
 
 .danger-info {
@@ -133,21 +135,21 @@
 }
 
 .danger-title {
-  font-size: 28rpx;
+  font-size: 26rpx;
   font-weight: 600;
   color: var(--color-expense);
   display: block;
 }
 
 .danger-desc {
-  font-size: 22rpx;
+  font-size: 20rpx;
   color: var(--text-tertiary);
   display: block;
-  margin-top: 4rpx;
+  margin-top: 2rpx;
 }
 
 .danger-arrow {
-  font-size: 36rpx;
+  font-size: 32rpx;
   color: var(--text-tertiary);
 }
 
@@ -163,31 +165,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.2s;
-}
-
-.modal-mask.show {
-  opacity: 1;
-  visibility: visible;
 }
 
 .modal-content {
   width: 560rpx;
   background: var(--bg-base);
   border-radius: var(--radius-lg);
-  padding: 48rpx 40rpx;
+  padding: 40rpx 36rpx;
   border: 1rpx solid var(--border-card);
 }
 
 .modal-title {
-  font-size: 32rpx;
+  font-size: 30rpx;
   font-weight: 600;
   color: var(--text-primary);
   display: block;
   text-align: center;
-  margin-bottom: 32rpx;
+  margin-bottom: 28rpx;
 }
 
 .modal-input {
@@ -197,7 +191,9 @@
   padding: 20rpx 24rpx;
   font-size: 28rpx;
   color: var(--text-primary);
-  margin-bottom: 32rpx;
+  margin-bottom: 28rpx;
+  height: 72rpx;
+  box-sizing: border-box;
 }
 
 .modal-placeholder {
@@ -206,7 +202,6 @@
 
 .modal-btns {
   display: flex;
-  margin: 0 -8rpx;
 }
 
 .modal-btn {
@@ -216,7 +211,6 @@
   border-radius: var(--radius-md);
   font-size: 28rpx;
   font-weight: 500;
-  margin: 0 8rpx;
   letter-spacing: 2rpx;
 }
 
@@ -224,6 +218,7 @@
   background: var(--bg-card);
   color: var(--text-secondary);
   border: 1rpx solid var(--border-subtle);
+  margin-right: 16rpx;
 }
 
 .modal-btn.confirm {
@@ -233,4 +228,74 @@
 
 .modal-btn:active {
   opacity: 0.85;
+}
+
+/* ---- 预算徽章 ---- */
+.cat-tag-budget {
+  font-size: 20rpx;
+  color: var(--accent-gold);
+  margin-left: 6rpx;
+  letter-spacing: 1rpx;
+}
+.cat-tag-budget-btn {
+  font-size: 20rpx;
+  color: var(--text-tertiary);
+  margin-left: 8rpx;
+  padding: 0 10rpx;
+  border: 1rpx solid var(--border-subtle);
+  border-radius: 12rpx;
+}
+.cat-tag-budget-btn:active {
+  color: var(--accent-gold);
+  border-color: var(--accent-gold);
+}
+
+/* ---- 数据备份区 ---- */
+.section-dot.safe {
+  background: var(--color-income);
+}
+.safe-zone {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 16rpx;
+  background: var(--color-income-soft);
+  border-radius: var(--radius-md);
+  border: 1rpx solid rgba(91, 184, 169, 0.2);
+}
+.safe-zone:active {
+  opacity: 0.85;
+}
+.safe-icon-wrap {
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: var(--radius-sm);
+  background: rgba(91, 184, 169, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16rpx;
+  flex-shrink: 0;
+}
+.safe-icon {
+  font-size: 28rpx;
+}
+.safe-info {
+  flex: 1;
+  min-width: 0;
+}
+.safe-title {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--color-income);
+  display: block;
+}
+.safe-desc {
+  font-size: 20rpx;
+  color: var(--text-tertiary);
+  display: block;
+  margin-top: 2rpx;
+}
+.safe-arrow {
+  font-size: 32rpx;
+  color: var(--text-tertiary);
 }

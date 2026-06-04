@@ -9,7 +9,8 @@
   <view class="amount-section card">
     <text class="currency">¥</text>
     <input class="amount-input" type="digit" value="{{amount}}" bindinput="onAmountInput"
-      placeholder="0.00" placeholder-class="amount-placeholder" />
+      placeholder="0.00" placeholder-class="amount-placeholder"
+      maxlength="12" style="font-size: {{amountFontSize}}" />
     <view class="amount-line {{type===0?'expense':'income'}}"></view>
   </view>
 
@@ -25,6 +26,17 @@
         </view>
         <text class="cat-name">{{item}}</text>
       </view>
+    </view>
+  </view>
+
+  <!-- 预算提示（仅当选择支出分类且已设预算且超阈值时显示） -->
+  <view class="budget-hint card" wx:if="{{budgetHint && budgetHint.status!=='ok' && budgetHint.status!=='none'}}">
+    <view class="budget-hint-bar-bg">
+      <view class="budget-hint-bar-fill budget-hint-{{budgetHint.status}}" style="width:{{budgetHint.pct>100?100:budgetHint.pct}}%"></view>
+    </view>
+    <view class="budget-hint-text">
+      <block wx:if="{{budgetHint.status==='over'}}">⚠ 已超支 {{budgetHint.pct}}%（¥{{budgetHint.spent}} / ¥{{budgetHint.budget}}）</block>
+      <block wx:elif="{{budgetHint.status==='warn'}}">本月已用 {{budgetHint.pct}}%，接近预算（¥{{budgetHint.spent}} / ¥{{budgetHint.budget}}）</block>
     </view>
   </view>
 

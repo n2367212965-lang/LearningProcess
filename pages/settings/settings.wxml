@@ -6,16 +6,18 @@
         <view class="section-dot expense"></view>
         <text class="section-title">支出分类</text>
       </view>
-      <view class="section-action" bindtap="showAddExpense">新增</view>
+      <view class="section-action" bindtap="showAddExpense">+ 新增</view>
     </view>
-    <view class="cat-list">
-      <view class="cat-item" wx:for="{{expenseCategories}}" wx:key="*this">
+    <view class="cat-tags">
+      <view class="cat-tag" wx:for="{{expenseCategories}}" wx:key="*this">
         <text class="cat-emoji">{{categoryIcons[item] || '📦'}}</text>
-        <text class="cat-name">{{item}}</text>
-        <view class="cat-delete" data-type="0" data-name="{{item}}" bindtap="onDeleteCategory">删除</view>
+        <text class="cat-tag-name">{{item}}</text>
+        <text class="cat-tag-budget" wx:if="{{budgets.expense[item]}}">¥{{budgets.expense[item]}}</text>
+        <view class="cat-tag-budget-btn" data-type="0" data-category="{{item}}" bindtap="showSetBudget">预算</view>
+        <view class="cat-tag-del" data-type="0" data-name="{{item}}" bindtap="onDeleteCategory">×</view>
       </view>
     </view>
-    <view class="reset-link" data-type="0" bindtap="onResetCategories">重置为默认分类</view>
+    <view class="reset-link" data-type="0" bindtap="onResetCategories">重置为默认</view>
   </view>
 
   <!-- 收入分类 -->
@@ -25,16 +27,44 @@
         <view class="section-dot income"></view>
         <text class="section-title">收入分类</text>
       </view>
-      <view class="section-action" bindtap="showAddIncome">新增</view>
+      <view class="section-action" bindtap="showAddIncome">+ 新增</view>
     </view>
-    <view class="cat-list">
-      <view class="cat-item" wx:for="{{incomeCategories}}" wx:key="*this">
+    <view class="cat-tags">
+      <view class="cat-tag" wx:for="{{incomeCategories}}" wx:key="*this">
         <text class="cat-emoji">{{categoryIcons[item] || '📦'}}</text>
-        <text class="cat-name">{{item}}</text>
-        <view class="cat-delete" data-type="1" data-name="{{item}}" bindtap="onDeleteCategory">删除</view>
+        <text class="cat-tag-name">{{item}}</text>
+        <text class="cat-tag-budget" wx:if="{{budgets.income[item]}}">¥{{budgets.income[item]}}</text>
+        <view class="cat-tag-budget-btn" data-type="1" data-category="{{item}}" bindtap="showSetBudget">预算</view>
+        <view class="cat-tag-del" data-type="1" data-name="{{item}}" bindtap="onDeleteCategory">×</view>
       </view>
     </view>
-    <view class="reset-link" data-type="1" bindtap="onResetCategories">重置为默认分类</view>
+    <view class="reset-link" data-type="1" bindtap="onResetCategories">重置为默认</view>
+  </view>
+
+  <!-- 数据备份 -->
+  <view class="section card">
+    <view class="section-header">
+      <view class="section-title-row">
+        <view class="section-dot safe"></view>
+        <text class="section-title">数据备份</text>
+      </view>
+    </view>
+    <view class="safe-zone" bindtap="onExport">
+      <view class="safe-icon-wrap"><text class="safe-icon">📤</text></view>
+      <view class="safe-info">
+        <text class="safe-title">导出到剪贴板</text>
+        <text class="safe-desc">复制 JSON 到聊天/文件保存</text>
+      </view>
+      <text class="safe-arrow">›</text>
+    </view>
+    <view class="safe-zone" bindtap="onImport" style="margin-top:16rpx">
+      <view class="safe-icon-wrap"><text class="safe-icon">📥</text></view>
+      <view class="safe-info">
+        <text class="safe-title">从剪贴板导入</text>
+        <text class="safe-desc">合并或替换现有数据</text>
+      </view>
+      <text class="safe-arrow">›</text>
+    </view>
   </view>
 
   <!-- 数据管理 -->
@@ -57,15 +87,28 @@
     </view>
   </view>
 
-  <!-- 新增分类弹窗 -->
-  <view class="modal-mask {{showAddModal?'show':''}}" bindtap="onModalCancel">
-    <view class="modal-content" catchtap="">
+  <!-- 新增分类弹窗 — 用 wx:if 彻底移除 DOM，避免布局残留 -->
+  <view class="modal-mask" wx:if="{{showAddModal}}" bindtap="onModalCancel">
+    <view class="modal-content" catchtap="preventBubble">
       <text class="modal-title">新增分类</text>
       <input class="modal-input" value="{{newCategory}}" bindinput="onModalInput"
-        placeholder="输入分类名称" placeholder-class="modal-placeholder" />
+        placeholder="输入分类名称" placeholder-class="modal-placeholder" focus="{{showAddModal}}" />
       <view class="modal-btns">
         <view class="modal-btn cancel" bindtap="onModalCancel">取消</view>
         <view class="modal-btn confirm" bindtap="onModalConfirm">确定</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 设置预算弹窗 -->
+  <view class="modal-mask" wx:if="{{showBudgetModal}}" bindtap="onBudgetCancel">
+    <view class="modal-content" catchtap="preventBubble">
+      <text class="modal-title">设置预算 — {{budgetCategory}}</text>
+      <input class="modal-input" type="digit" value="{{budgetAmount}}" bindinput="onBudgetAmountInput"
+        placeholder="月度预算金额 (0 表示清除)" placeholder-class="modal-placeholder" focus="{{showBudgetModal}}" />
+      <view class="modal-btns">
+        <view class="modal-btn cancel" bindtap="onBudgetCancel">取消</view>
+        <view class="modal-btn confirm" bindtap="onBudgetSave">保存</view>
       </view>
     </view>
   </view>
